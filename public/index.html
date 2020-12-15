@@ -1,25 +1,46 @@
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<div id="app">
-    {{ message }}
-</div>
-<div id="app-2">
-    <span v-bind:title="message">
-      Hover your mouse over me for a few seconds
-      to see my dynamically bound title!
-    </span>
-  </div>
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title></title>
 
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+
+	
+</head>
+<body>
+  <table style="width:100%">
+    <tr>
+      <th>Location-Name</th>
+      <th>Location-Langitude</th>
+      <th>Location-Latitude</th>
+      <th>Map</th>
+      <th>Checked</th>
+    </tr>
+    <tr>
+      <td>Test</td>
+      <td>35.02509</td>
+      <td>135.76193</td>
+      <td id="map" style="width: 400px; height: 200px;"></td>
+      <td>O</td>
+    </tr>
+
+</table>
 <script>
-var app = new Vue({
-    el: '#app',
-    data: {
-      message: 'Hello Vue!'
-    }
-  })
-  var app2 = new Vue({
-  el: '#app-2',
-  data: {
-    message: 'You loaded this page on ' + new Date().toLocaleString()
-  }
-})
-  </script>
+	var map = L.map('map', {
+    center: [35.02509, 135.76193],
+    zoom: 18
+});
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+L.marker([35.02509, 135.76193]).addTo(map)
+</script>
+</body>
+</html>
