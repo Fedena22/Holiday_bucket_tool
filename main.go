@@ -10,9 +10,12 @@ import (
 
 func main() {
 	app := fiber.New()
+	setupRoutes(app)
+	db.Migrate()
+	log.Fatal(app.Listen(":3000"))
+}
 
-	app.Static("/", "./public/index.html")
-
+func setupRoutes(app *fiber.App) {
 	// Provide a minimal config
 	app.Use(basicauth.New(basicauth.Config{
 		Users: map[string]string{
@@ -41,7 +44,13 @@ func main() {
 		ContextPassword: "_pass",
 	}))
 
+	app.Static("/", "./public/index.html")
+
+	app.Get("/api/v1/visitedlocations", db.GetVisitedLocations)
+	app.Get("/api/v1/notvisitedlocations", db.GetNotVisitedLocations)
+	app.Delete("/api/v1/deletelocation", db.DeleteLocations)
+	app.Post("/api/v1/addlocation", db.UpdateLocations)
+	app.Put("/api/v1/newlocation", db.InsertLocations)
 	app.Static("/admin", "./public/admin.html")
-	db.Migrate()
-	log.Fatal(app.Listen(":3000"))
+
 }

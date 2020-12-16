@@ -9,7 +9,12 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<style>
+  #map{
+    height: 180px;
+  }
 
+</style>
 
 	
 </head>
@@ -26,7 +31,7 @@
       <td>Test</td>
       <td>35.02509</td>
       <td>135.76193</td>
-      <td id="map" style="width: 400px; height: 200px;"></td>
+      <td id="map"></td>
       <td>O</td>
     </tr>
 
@@ -36,11 +41,14 @@
     center: [35.02509, 135.76193],
     zoom: 18
 });
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const latitude = 35.02509;
+const longitude = 135.76193;
+  const titleServer1 = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  const titleServer2 = 'https://cdn.lima-labs.com/{z}/{x}/{y}.png?free ';
+  L.tileLayer(titleServer1, {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
-L.marker([35.02509, 135.76193]).addTo(map)
+L.marker([latitude,longitude ]).addTo(map)
 </script>
 </body>
 </html>

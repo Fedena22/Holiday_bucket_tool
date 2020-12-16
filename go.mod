@@ -7,5 +7,4 @@ require (
 	github.com/mattn/go-sqlite3 v1.12.0
 	github.com/rubenv/sql-migrate v0.0.0-20200616145509-8d140a17f351
 	github.com/sirupsen/logrus v1.4.2
-	modernc.org/sqlite v1.7.5
 )

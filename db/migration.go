@@ -24,4 +24,5 @@ func Migrate() {
 		log.Fatalf("Error with migration %v", err)
 	}
 	log.Printf("Applied %d migrations!", n)
+	db.Close()
 }
