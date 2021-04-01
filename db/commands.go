@@ -2,8 +2,9 @@ package db
 
 import (
 	"database/sql"
+	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	log "github.com/sirupsen/logrus"
 )
@@ -18,12 +19,13 @@ type Bucket struct {
 }
 
 //GetVisitedLocations select all the visited locations from the database
-func GetVisitedLocations(ctx *fiber.Ctx) error {
+func GetVisitedLocations(ctx *gin.Context) {
 	db := openDB()
 	defer db.Close()
 	rows, error := selectFromBucket(db, 1)
 	if error != nil {
-		return error
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+		return
 	}
 	buckets := []Bucket{}
 	defer rows.Close()
@@ -31,23 +33,23 @@ func GetVisitedLocations(ctx *fiber.Ctx) error {
 		var row Bucket
 		error = rows.Scan(&row.Number, &row.Placename, &row.Latitude, &row.Longitude, &row.Visited)
 		if error != nil {
-			log.Infoln("0")
-			return error
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+			return
 		}
 		buckets = append(buckets, row)
 	}
 	log.Infoln(buckets)
-	ctx.JSON(buckets)
-	return nil
+	ctx.JSON(http.StatusOK, buckets)
 }
 
 //GetNotVisitedLocations select all the not visited locations from the database
-func GetNotVisitedLocations(ctx *fiber.Ctx) error {
+func GetNotVisitedLocations(ctx *gin.Context) {
 	db := openDB()
 	defer db.Close()
 	rows, error := selectFromBucket(db, 0)
 	if error != nil {
-		return error
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+		return
 	}
 	buckets := []Bucket{}
 	defer rows.Close()
@@ -55,32 +57,30 @@ func GetNotVisitedLocations(ctx *fiber.Ctx) error {
 		var row Bucket
 		error = rows.Scan(&row.Number, &row.Placename, &row.Latitude, &row.Longitude, &row.Visited)
 		if error != nil {
-			log.Infoln("0")
-			return error
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+			return
 		}
 		buckets = append(buckets, row)
 	}
-	log.Infoln(buckets)
-	ctx.JSON(buckets)
-	return nil
+
+	ctx.JSON(http.StatusOK, &buckets)
 }
 
 //UpdateLocations updates the one or more locations
-func UpdateLocations(ctx *fiber.Ctx) error {
-	ctx.SendString("Update locations")
-	return nil
+func UpdateLocations(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{"Status": "Update locations"})
 }
 
 //InsertLocations insert one ore more locations into the database
-func InsertLocations(ctx *fiber.Ctx) error {
-	ctx.SendString("Insert locations")
-	return nil
+func InsertLocations(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{"Status": "Insert locations"})
+
 }
 
 //DeleteLocations delete one or more locations from the database
-func DeleteLocations(ctx *fiber.Ctx) error {
-	ctx.SendString("Delete locations")
-	return nil
+func DeleteLocations(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{"Status": "Delete locations"})
+
 }
 
 func openDB() *sql.DB {

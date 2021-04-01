@@ -1,56 +1,39 @@
 package main
 
 import (
-	"github.com/Fedena22/Holiday_bucket_tool/db"
-	log "github.com/sirupsen/logrus"
+	"net/http"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/basicauth"
+	"github.com/Fedena22/Holiday_bucket_tool/db"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	app := fiber.New()
-	setupRoutes(app)
+
+	r := gin.Default()
+	r.LoadHTMLGlob("public/*.html")
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
+
+	admin := r.Group("/admin", gin.BasicAuth(gin.Accounts{
+		"admin": "admin",
+	}))
+
+	admin.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "admin.html", nil)
+	})
+	admin.GET("/visetedlocations", db.GetVisitedLocations)
+	admin.GET("/notvisetedlocations", db.GetNotVisitedLocations)
+	admin.DELETE("/deletelocations", db.DeleteLocations)
+	admin.POST("/addlocations", db.UpdateLocations)
+	admin.PUT("/newlocations", db.InsertLocations)
+
 	db.Migrate()
-	log.Fatal(app.Listen(":3000"))
-}
-
-func setupRoutes(app *fiber.App) {
-	// Provide a minimal config
-	app.Use(basicauth.New(basicauth.Config{
-		Users: map[string]string{
-
-			"admin": "123456",
-		},
-	}))
-
-	// Or extend your config for customization
-	app.Use(basicauth.New(basicauth.Config{
-		Users: map[string]string{
-
-			"admin": "123456",
-		},
-		Realm: "Forbidden",
-		Authorizer: func(user, pass string) bool {
-			if user == "admin" && pass == "123456" {
-				return true
-			}
-			return false
-		},
-		Unauthorized: func(c *fiber.Ctx) error {
-			return c.SendFile("./public/unauthorized.html")
-		},
-		ContextUsername: "_user",
-		ContextPassword: "_pass",
-	}))
-
-	app.Static("/", "./public/index.html")
-
-	app.Get("/api/v1/visitedlocations", db.GetVisitedLocations)
-	app.Get("/api/v1/notvisitedlocations", db.GetNotVisitedLocations)
-	app.Delete("/api/v1/deletelocation", db.DeleteLocations)
-	app.Post("/api/v1/addlocation", db.UpdateLocations)
-	app.Put("/api/v1/newlocation", db.InsertLocations)
-	app.Static("/admin", "./public/admin.html")
-
+	r.Run(":3000")
 }
