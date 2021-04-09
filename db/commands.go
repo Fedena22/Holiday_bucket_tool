@@ -66,6 +66,30 @@ func GetNotVisitedLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &buckets)
 }
 
+//GetAllLocations returns evey location wiht out a where.
+func GetAllLocations(ctx *gin.Context) {
+	db := openDB()
+	defer db.Close()
+	rows, error := selectAllFromBucket(db)
+	if error != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+		return
+	}
+	buckets := []Bucket{}
+	defer rows.Close()
+	for rows.Next() {
+		var row Bucket
+		error = rows.Scan(&row.Number, &row.Placename, &row.Latitude, &row.Longitude, &row.Visited)
+		if error != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": "failed", "message": error.Error()})
+			return
+		}
+		buckets = append(buckets, row)
+	}
+
+	ctx.JSON(http.StatusOK, &buckets)
+}
+
 //UpdateLocations updates the one or more locations
 func UpdateLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"Status": "Update locations"})
@@ -93,6 +117,13 @@ func openDB() *sql.DB {
 
 func selectFromBucket(db *sql.DB, visited int) (*sql.Rows, error) {
 	rows, error := db.Query("SELECT * FROM Buckets WHERE Visited = ?", visited)
+	if error != nil {
+		return rows, error
+	}
+	return rows, nil
+}
+func selectAllFromBucket(db *sql.DB) (*sql.Rows, error) {
+	rows, error := db.Query("SELECT * FROM Buckets")
 	if error != nil {
 		return rows, error
 	}

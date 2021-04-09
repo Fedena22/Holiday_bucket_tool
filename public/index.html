@@ -10,45 +10,25 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 <style>
-  #map{
-    height: 180px;
-  }
+
+  @import url("/assets/index.css"); 
 
 </style>
 
+<script  type="application/javascript" src="/assets/index.js"></script>
 	
 </head>
 <body>
-  <table style="width:100%">
-    <tr>
-      <th>Location-Name</th>
-      <th>Location-Langitude</th>
-      <th>Location-Latitude</th>
-      <th>Map</th>
-      <th>Checked</th>
-    </tr>
-    <tr>
-      <td>Test</td>
-      <td>35.02509</td>
-      <td>135.76193</td>
-      <td id="map"></td>
-      <td>O</td>
-    </tr>
-
-</table>
-<script>
-	var map = L.map('map', {
-    center: [35.02509, 135.76193],
-    zoom: 18
-});
-const latitude = 35.02509;
-const longitude = 135.76193;
-  const titleServer1 = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  const titleServer2 = 'https://cdn.lima-labs.com/{z}/{x}/{y}.png?free ';
-  L.tileLayer(titleServer1, {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-L.marker([latitude,longitude ]).addTo(map)
-</script>
+        <!-- Here a loader is created which 
+             loads till response comes -->
+             <div class="d-flex justify-content-center">
+              <div class="spinner-border" 
+                   role="status" id="loading">
+                  <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+          <h1>Locations</h1>
+          <!-- table for showing data -->
+          <table id="location"></table>
 </body>
 </html>
