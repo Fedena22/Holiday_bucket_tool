@@ -7,15 +7,20 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	packr "github.com/gobuffalo/packr/v2"
 	migrate "github.com/rubenv/sql-migrate"
 )
 
 //Migrate Creates and updates the db schema
 func Migrate() {
-	migrations := &migrate.FileMigrationSource{
-		Dir: "./db/migrations",
+	// migrations := &migrate.FileMigrationSource{
+	// 	Dir: "./db/migrations",
+	// }
+	migrations := &migrate.PackrMigrationSource{
+		Box: packr.New("migrations", "./migrations"),
 	}
-	db, err := sql.Open("sqlite3", "./sql.db")
+	log.Printf("%s", migrations)
+	db, err := sql.Open("sqlite3", "./bucketlist.db")
 	if err != nil {
 		log.Fatalf("Error with open DB %v", err)
 	}

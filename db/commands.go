@@ -108,7 +108,7 @@ func DeleteLocations(ctx *gin.Context) {
 }
 
 func openDB() *sql.DB {
-	db, err := sql.Open("sqlite3", "./sql.db")
+	db, err := sql.Open("sqlite3", "./bucketlist.db")
 	if err != nil {
 		log.Fatalf("Error with open DB %v", err)
 	}
