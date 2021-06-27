@@ -1,6 +1,6 @@
 module github.com/Fedena22/Holiday_bucket_tool
 
-go 1.15
+go 1.16
 
 require (
 	github.com/gin-contrib/cors v1.3.1

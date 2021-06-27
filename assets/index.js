@@ -21,28 +21,36 @@ const api_url =
   function show(data){
     let tab =
     `
+    <thead>
     <tr>
     <th>Location-Name</th>
-    <th>Location-Langitude</th>
-    <th>Location-Latitude</th>
     <th>Map</th>
     <th>Visited</th>
-    </tr>`;
+    </tr>
+    </thead>`;
 
     for (let r of data) {
       var checkbox = ""
       if (r.Visited) {
         checkbox = "checked"
       }
-      tab += `<tr>
-      <td>${r.Placename}</td>
-      <td>${r.Lat}</td>
-      <td>${r.Long}</td>
-      <td id="maps${r.id}" style="height: 180px; width: 180px"></td>
-      <td><input type="checkbox" ${checkbox} disabled style="hight: 60px; width: 60px"></td>
+      tab += `<tbody><tr>
+      <td style="width: 40%">${r.Placename}</td>
+      <td id="maps${r.id}" style="height: 180px; width: 50%"></td>
+      <td><input type="checkbox" ${checkbox} disabled style="hight: 180px; width: 10%"></td>
   
-      </tr>`;
+      </tr>
+      </tbody>`;
     }
+    tab += 
+    `
+    <tfoot>
+    <tr>
+    <th>Location-Name</th>
+    <th>Map</th>
+    <th>Visited</th>
+    </tr>
+    </tfoot>`;
     document.getElementById("location").innerHTML = tab;
 
   for (let r of data) {
@@ -60,4 +68,5 @@ const api_url =
   }).addTo(map);
   L.marker([latitude,longitude ]).addTo(map)
     }
+
   }
