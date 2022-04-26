@@ -1,1 +1,44 @@
-admin
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title></title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<style>
+
+  @import url("/assets/index.css"); 
+
+</style>
+
+<script  type="application/javascript" src="/assets/admin.js"></script>
+	
+</head>
+<body>
+  <header>
+  </header>
+             <div class="d-flex justify-content-center">
+              <div class="spinner-border" 
+                   role="status" id="loading">
+                  <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+          <table id="location" class="styled-table"></table>
+          <button onclick="alert('Hello Campers')">Update</button>
+          <form action="" id="newlocation">
+              <input type="text" id="locationname" placeholder="Name of the location">
+              <input type="text" id="latlong" placeholder="Latitute and longitude if the location">
+              <button type="submit" class="btn-submit" id="btnSubmit">Save</button>
+          </form>
+          <INPUT type="button" value="Add Row" onclick="addRow('newlocation')" />
+          <INPUT type="button" value="Delete Row" onclick="deleteRow('newlocation')" />
+
+     <footer>
+    <p>© 2021 by me</p>
+  </footer>
+</body>
+</html>
