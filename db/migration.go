@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite" //Sqlite driver without cgo
 
 	log "github.com/sirupsen/logrus"
 
@@ -11,7 +11,7 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 )
 
-//Migrate Creates and updates the db schema
+// Migrate Creates and updates the db schema
 func Migrate() {
 	// migrations := &migrate.FileMigrationSource{
 	// 	Dir: "./db/migrations",
@@ -20,7 +20,7 @@ func Migrate() {
 		Box: packr.New("migrations", "./migrations"),
 	}
 	log.Printf("%s", migrations)
-	db, err := sql.Open("sqlite3", "./bucketlist.db")
+	db, err := sql.Open("sqlite", "./bucketlist.db")
 	if err != nil {
 		log.Fatalf("Error with open DB %v", err)
 	}

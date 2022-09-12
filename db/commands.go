@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
 	log "github.com/sirupsen/logrus"
+	_ "modernc.org/sqlite" //Sqlite driver without cgo
 )
 
-//Bucket the db struct
+// Bucket the db struct
 type Bucket struct {
 	Number    int    `json:"id" db:"id"`
 	Placename string `json:"Placename" db:"Placename"`
@@ -18,7 +18,7 @@ type Bucket struct {
 	Visited   bool   `json:"Visited" db:"Visited"`
 }
 
-//GetVisitedLocations select all the visited locations from the database
+// GetVisitedLocations select all the visited locations from the database
 func GetVisitedLocations(ctx *gin.Context) {
 	db := openDB()
 	defer db.Close()
@@ -42,7 +42,7 @@ func GetVisitedLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, buckets)
 }
 
-//GetNotVisitedLocations select all the not visited locations from the database
+// GetNotVisitedLocations select all the not visited locations from the database
 func GetNotVisitedLocations(ctx *gin.Context) {
 	db := openDB()
 	defer db.Close()
@@ -66,7 +66,7 @@ func GetNotVisitedLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &buckets)
 }
 
-//GetAllLocations returns evey location wiht out a where.
+// GetAllLocations returns evey location wiht out a where.
 func GetAllLocations(ctx *gin.Context) {
 	db := openDB()
 	defer db.Close()
@@ -90,25 +90,25 @@ func GetAllLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, &buckets)
 }
 
-//UpdateLocations updates the one or more locations
+// UpdateLocations updates the one or more locations
 func UpdateLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"Status": "Update locations"})
 }
 
-//InsertLocations insert one ore more locations into the database
+// InsertLocations insert one ore more locations into the database
 func InsertLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"Status": "Insert locations"})
 
 }
 
-//DeleteLocations delete one or more locations from the database
+// DeleteLocations delete one or more locations from the database
 func DeleteLocations(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"Status": "Delete locations"})
 
 }
 
 func openDB() *sql.DB {
-	db, err := sql.Open("sqlite3", "./bucketlist.db")
+	db, err := sql.Open("sqlite", "./bucketlist.db")
 	if err != nil {
 		log.Fatalf("Error with open DB %v", err)
 	}
