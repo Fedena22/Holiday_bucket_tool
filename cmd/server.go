@@ -35,6 +35,35 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 func mainPageHandler(ctx *fasthttp.RequestCtx) {
 	p := &templates.MainPage{
 		CTX: ctx,
+		Data: []templates.Data{
+			{
+				Number:    0,
+				Placename: "test1",
+				Latitude:  "1234",
+				Longitude: "4321",
+				Visited:   true,
+			},
+			{
+				Number:    1,
+				Placename: "test2",
+				Latitude:  "1234",
+				Longitude: "4321",
+				Visited:   true,
+			},
+			{
+				Number:    2,
+				Placename: "test2",
+				Latitude:  "1234",
+				Longitude: "4321",
+			},
+			{
+				Number:    3,
+				Placename: "test3",
+				Latitude:  "1234",
+				Longitude: "4321",
+				Visited:   true,
+			},
+		},
 	}
 	templates.WritePageTemplate(ctx, p)
 }

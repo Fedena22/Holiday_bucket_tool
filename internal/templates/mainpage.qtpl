@@ -5,6 +5,14 @@
 {% code
 type MainPage struct {
 	CTX *fasthttp.RequestCtx
+	Data []Data
+}
+type Data struct {
+	Number    int   
+	Placename string 
+	Latitude  string 
+	Longitude string 
+	Visited   bool   
 }
 %}
 
@@ -18,14 +26,54 @@ type MainPage struct {
 	<h1>Main page</h1>
 	<div>
 		Click links below:
-		<ul>
-			<li><a href="/table?rowsCount=42">Table page</a></li>
-			<li><a href="/unknown-page">Error page</a></li>
-		</ul>
+	<table style="width:100%">
+	{%= emitRows(p.Data) %}
+	</table>
 	</div>
 	<div>
 		Some info about you:<br/>
 		IP: <b>{%s p.CTX.RemoteIP().String() %}</b><br/>
 		User-Agent: <b>{%z p.CTX.UserAgent() %}</b><br/>
 	</div>
+{% endfunc %}
+
+{% func emitRows(rows []Data) %}
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Lang/Long</th>
+		<th>Visited</th>
+	</tr>
+
+	{% for n, r := range rows %}
+		<tr style="background: {% if n&1 == 1 %}white{% else %}#ddd{% endif %}">
+			<td>{%d r.Number %}</td>
+			<td>{%s r.Placename %}</td>
+			<td style="height:100px vertical-align:bottom" id="map{%d r.Number %}">{%s= drawMap(r.Longitude, r.Latitude, r.Number) %}</td>
+			<td>{%s= drawButton(r.Visited) %}</td>
+		</tr>
+	{% endfor %}
+{% endfunc %}
+
+{% func drawMap(lat, long string, id int) %}
+<script >
+var map = L.map('map{%d id %}').setView([51.505, -0.09], 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker([51.5, -0.09]).addTo(map)
+    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+    .openPopup();
+</script>
+{% endfunc %}
+
+{% func drawButton(check bool) %}
+
+   {% if (check) %}
+   <input type="checkbox" checked disabled >
+   {% else %}
+	<input type="checkbox" disabled >
+	{% endif %}
 {% endfunc %}
