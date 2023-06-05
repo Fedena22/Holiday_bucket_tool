@@ -10,7 +10,7 @@ require (
 	github.com/rubenv/sql-migrate v1.4.0
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/sync v0.2.0
-	modernc.org/sqlite v1.22.1
+	modernc.org/sqlite v1.23.0
 )
 
 require (
