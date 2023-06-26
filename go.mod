@@ -7,7 +7,7 @@ require (
 	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gobuffalo/packr/v2 v2.8.3
-	github.com/rubenv/sql-migrate v1.4.0
+	github.com/rubenv/sql-migrate v1.5.1
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/sync v0.3.0
 	modernc.org/sqlite v1.23.1
