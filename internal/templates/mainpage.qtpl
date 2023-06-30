@@ -10,9 +10,10 @@ type MainPage struct {
 type Data struct {
 	Number    int   
 	Placename string 
-	Latitude  string 
-	Longitude string 
-	Visited   bool   
+	Latitude  float64 
+	Longitude float64
+	Visited   bool
+	Username string   
 }
 %}
 
@@ -39,32 +40,41 @@ type Data struct {
 
 {% func emitRows(rows []Data) %}
 	<tr>
-		<th>ID</th>
+		{% comment %} <th>ID</th>  {% endcomment %}
 		<th>Name</th>
-		<th>Lang/Long</th>
+		<th>Map</th>
 		<th>Visited</th>
 	</tr>
 
 	{% for n, r := range rows %}
 		<tr style="background: {% if n&1 == 1 %}white{% else %}#ddd{% endif %}">
-			<td>{%d r.Number %}</td>
-			<td>{%s r.Placename %}</td>
-			<td style="height:100px vertical-align:bottom" id="map{%d r.Number %}">{%s= drawMap(r.Longitude, r.Latitude, r.Number) %}</td>
-			<td>{%s= drawButton(r.Visited) %}</td>
+			{% comment %} <td>{%d r.Number %}</td>
+			{% endcomment %}
+			{% if r.Username != "admin" %}
+			<td style="width:20%;">{%s r.Placename %}</td> 
+			<td style="height:360px; vertical-align:bottom; width:60%;" id="map{%d r.Number %}">{%= drawMap(r.Longitude, r.Latitude, r.Number, r.Placename) %}</td>
+			<td style="vertical-align:bottom; width:20%;">{%s= drawButton(r.Visited) %}</td>
+			{% else %}
+			<td></td>
+			<td></td>
+			<td><button onclick="myFunction()">Click me!</button></td>
+			{% endif %}
 		</tr>
 	{% endfor %}
 {% endfunc %}
 
-{% func drawMap(lat, long string, id int) %}
+{% func drawMap(lat, long float64, id int, name string) %}
 <script >
-var map = L.map('map{%d id %}').setView([51.505, -0.09], 13);
+var map = L.map('map{%d id %}', {
+    center: [{%f long %}, {%f lat %}],
+    zoom: 13});
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+L.marker([{%f long %},{%f lat %}]).addTo(map)
+    .bindPopup('{%s name %}')
     .openPopup();
 </script>
 {% endfunc %}

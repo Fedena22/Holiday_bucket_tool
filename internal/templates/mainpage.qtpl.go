@@ -31,290 +31,331 @@ type MainPage struct {
 type Data struct {
 	Number    int
 	Placename string
-	Latitude  string
-	Longitude string
+	Latitude  float64
+	Longitude float64
 	Visited   bool
+	Username  string
 }
 
-//line ../internal/templates/mainpage.qtpl:20
+//line ../internal/templates/mainpage.qtpl:21
 func (p *MainPage) StreamTitle(qw422016 *qt422016.Writer) {
-//line ../internal/templates/mainpage.qtpl:20
+//line ../internal/templates/mainpage.qtpl:21
 	qw422016.N().S(`
 	This is the main page
 `)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 }
 
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 func (p *MainPage) WriteTitle(qq422016 qtio422016.Writer) {
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	p.StreamTitle(qw422016)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	qt422016.ReleaseWriter(qw422016)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 }
 
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 func (p *MainPage) Title() string {
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	qb422016 := qt422016.AcquireByteBuffer()
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	p.WriteTitle(qb422016)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	qs422016 := string(qb422016.B)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	qt422016.ReleaseByteBuffer(qb422016)
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 	return qs422016
-//line ../internal/templates/mainpage.qtpl:22
+//line ../internal/templates/mainpage.qtpl:23
 }
 
-//line ../internal/templates/mainpage.qtpl:25
+//line ../internal/templates/mainpage.qtpl:26
 func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
-//line ../internal/templates/mainpage.qtpl:25
+//line ../internal/templates/mainpage.qtpl:26
 	qw422016.N().S(`
 	<h1>Main page</h1>
 	<div>
 		Click links below:
 	<table style="width:100%">
 	`)
-//line ../internal/templates/mainpage.qtpl:30
+//line ../internal/templates/mainpage.qtpl:31
 	streamemitRows(qw422016, p.Data)
-//line ../internal/templates/mainpage.qtpl:30
+//line ../internal/templates/mainpage.qtpl:31
 	qw422016.N().S(`
 	</table>
 	</div>
 	<div>
 		Some info about you:<br/>
 		IP: <b>`)
-//line ../internal/templates/mainpage.qtpl:35
+//line ../internal/templates/mainpage.qtpl:36
 	qw422016.E().S(p.CTX.RemoteIP().String())
-//line ../internal/templates/mainpage.qtpl:35
+//line ../internal/templates/mainpage.qtpl:36
 	qw422016.N().S(`</b><br/>
 		User-Agent: <b>`)
-//line ../internal/templates/mainpage.qtpl:36
+//line ../internal/templates/mainpage.qtpl:37
 	qw422016.E().Z(p.CTX.UserAgent())
-//line ../internal/templates/mainpage.qtpl:36
+//line ../internal/templates/mainpage.qtpl:37
 	qw422016.N().S(`</b><br/>
 	</div>
 `)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 }
 
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 func (p *MainPage) WriteBody(qq422016 qtio422016.Writer) {
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	p.StreamBody(qw422016)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	qt422016.ReleaseWriter(qw422016)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 }
 
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 func (p *MainPage) Body() string {
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	qb422016 := qt422016.AcquireByteBuffer()
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	p.WriteBody(qb422016)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	qs422016 := string(qb422016.B)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	qt422016.ReleaseByteBuffer(qb422016)
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 	return qs422016
-//line ../internal/templates/mainpage.qtpl:38
+//line ../internal/templates/mainpage.qtpl:39
 }
 
-//line ../internal/templates/mainpage.qtpl:40
+//line ../internal/templates/mainpage.qtpl:41
 func streamemitRows(qw422016 *qt422016.Writer, rows []Data) {
-//line ../internal/templates/mainpage.qtpl:40
+//line ../internal/templates/mainpage.qtpl:41
 	qw422016.N().S(`
 	<tr>
-		<th>ID</th>
+		`)
+//line ../internal/templates/mainpage.qtpl:43
+	qw422016.N().S(`
 		<th>Name</th>
-		<th>Lang/Long</th>
+		<th>Map</th>
 		<th>Visited</th>
 	</tr>
 
 	`)
-//line ../internal/templates/mainpage.qtpl:48
+//line ../internal/templates/mainpage.qtpl:49
 	for n, r := range rows {
-//line ../internal/templates/mainpage.qtpl:48
+//line ../internal/templates/mainpage.qtpl:49
 		qw422016.N().S(`
 		<tr style="background: `)
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 		if n&1 == 1 {
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 			qw422016.N().S(`white`)
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 		} else {
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 			qw422016.N().S(`#ddd`)
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 		}
-//line ../internal/templates/mainpage.qtpl:49
+//line ../internal/templates/mainpage.qtpl:50
 		qw422016.N().S(`">
-			<td>`)
-//line ../internal/templates/mainpage.qtpl:50
-		qw422016.N().D(r.Number)
-//line ../internal/templates/mainpage.qtpl:50
-		qw422016.N().S(`</td>
-			<td>`)
-//line ../internal/templates/mainpage.qtpl:51
-		qw422016.E().S(r.Placename)
-//line ../internal/templates/mainpage.qtpl:51
-		qw422016.N().S(`</td>
-			<td style="height:100px vertical-align:bottom" id="map`)
+			`)
 //line ../internal/templates/mainpage.qtpl:52
-		qw422016.N().D(r.Number)
-//line ../internal/templates/mainpage.qtpl:52
-		qw422016.N().S(`">`)
-//line ../internal/templates/mainpage.qtpl:52
-		qw422016.N().S(drawMap(r.Longitude, r.Latitude, r.Number))
-//line ../internal/templates/mainpage.qtpl:52
-		qw422016.N().S(`</td>
-			<td>`)
+		qw422016.N().S(`
+			`)
 //line ../internal/templates/mainpage.qtpl:53
-		qw422016.N().S(drawButton(r.Visited))
+		if r.Username != "admin" {
 //line ../internal/templates/mainpage.qtpl:53
-		qw422016.N().S(`</td>
+			qw422016.N().S(`
+			<td style="width:20%;">`)
+//line ../internal/templates/mainpage.qtpl:54
+			qw422016.E().S(r.Placename)
+//line ../internal/templates/mainpage.qtpl:54
+			qw422016.N().S(`</td> 
+			<td style="height:360px; vertical-align:bottom; width:60%;" id="map`)
+//line ../internal/templates/mainpage.qtpl:55
+			qw422016.N().D(r.Number)
+//line ../internal/templates/mainpage.qtpl:55
+			qw422016.N().S(`">`)
+//line ../internal/templates/mainpage.qtpl:55
+			streamdrawMap(qw422016, r.Longitude, r.Latitude, r.Number, r.Placename)
+//line ../internal/templates/mainpage.qtpl:55
+			qw422016.N().S(`</td>
+			<td style="vertical-align:bottom; width:20%;">`)
+//line ../internal/templates/mainpage.qtpl:56
+			qw422016.N().S(drawButton(r.Visited))
+//line ../internal/templates/mainpage.qtpl:56
+			qw422016.N().S(`</td>
+			`)
+//line ../internal/templates/mainpage.qtpl:57
+		} else {
+//line ../internal/templates/mainpage.qtpl:57
+			qw422016.N().S(`
+			<td></td>
+			<td></td>
+			<td><button onclick="myFunction()">Click me!</button></td>
+			`)
+//line ../internal/templates/mainpage.qtpl:61
+		}
+//line ../internal/templates/mainpage.qtpl:61
+		qw422016.N().S(`
 		</tr>
 	`)
-//line ../internal/templates/mainpage.qtpl:55
+//line ../internal/templates/mainpage.qtpl:63
 	}
-//line ../internal/templates/mainpage.qtpl:55
+//line ../internal/templates/mainpage.qtpl:63
 	qw422016.N().S(`
 `)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 }
 
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 func writeemitRows(qq422016 qtio422016.Writer, rows []Data) {
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	streamemitRows(qw422016, rows)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	qt422016.ReleaseWriter(qw422016)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 }
 
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 func emitRows(rows []Data) string {
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	qb422016 := qt422016.AcquireByteBuffer()
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	writeemitRows(qb422016, rows)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	qs422016 := string(qb422016.B)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	qt422016.ReleaseByteBuffer(qb422016)
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 	return qs422016
-//line ../internal/templates/mainpage.qtpl:56
+//line ../internal/templates/mainpage.qtpl:64
 }
 
-//line ../internal/templates/mainpage.qtpl:58
-func streamdrawMap(qw422016 *qt422016.Writer, lat, long string, id int) {
-//line ../internal/templates/mainpage.qtpl:58
+//line ../internal/templates/mainpage.qtpl:66
+func streamdrawMap(qw422016 *qt422016.Writer, lat, long float64, id int, name string) {
+//line ../internal/templates/mainpage.qtpl:66
 	qw422016.N().S(`
 <script >
 var map = L.map('map`)
-//line ../internal/templates/mainpage.qtpl:60
+//line ../internal/templates/mainpage.qtpl:68
 	qw422016.N().D(id)
-//line ../internal/templates/mainpage.qtpl:60
-	qw422016.N().S(`').setView([51.505, -0.09], 13);
+//line ../internal/templates/mainpage.qtpl:68
+	qw422016.N().S(`', {
+    center: [`)
+//line ../internal/templates/mainpage.qtpl:69
+	qw422016.N().F(long)
+//line ../internal/templates/mainpage.qtpl:69
+	qw422016.N().S(`, `)
+//line ../internal/templates/mainpage.qtpl:69
+	qw422016.N().F(lat)
+//line ../internal/templates/mainpage.qtpl:69
+	qw422016.N().S(`],
+    zoom: 13});
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+L.marker([`)
+//line ../internal/templates/mainpage.qtpl:76
+	qw422016.N().F(long)
+//line ../internal/templates/mainpage.qtpl:76
+	qw422016.N().S(`,`)
+//line ../internal/templates/mainpage.qtpl:76
+	qw422016.N().F(lat)
+//line ../internal/templates/mainpage.qtpl:76
+	qw422016.N().S(`]).addTo(map)
+    .bindPopup('`)
+//line ../internal/templates/mainpage.qtpl:77
+	qw422016.E().S(name)
+//line ../internal/templates/mainpage.qtpl:77
+	qw422016.N().S(`')
     .openPopup();
 </script>
 `)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
 }
 
-//line ../internal/templates/mainpage.qtpl:70
-func writedrawMap(qq422016 qtio422016.Writer, lat, long string, id int) {
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
+func writedrawMap(qq422016 qtio422016.Writer, lat, long float64, id int, name string) {
+//line ../internal/templates/mainpage.qtpl:80
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line ../internal/templates/mainpage.qtpl:70
-	streamdrawMap(qw422016, lat, long, id)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
+	streamdrawMap(qw422016, lat, long, id, name)
+//line ../internal/templates/mainpage.qtpl:80
 	qt422016.ReleaseWriter(qw422016)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
 }
 
-//line ../internal/templates/mainpage.qtpl:70
-func drawMap(lat, long string, id int) string {
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
+func drawMap(lat, long float64, id int, name string) string {
+//line ../internal/templates/mainpage.qtpl:80
 	qb422016 := qt422016.AcquireByteBuffer()
-//line ../internal/templates/mainpage.qtpl:70
-	writedrawMap(qb422016, lat, long, id)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
+	writedrawMap(qb422016, lat, long, id, name)
+//line ../internal/templates/mainpage.qtpl:80
 	qs422016 := string(qb422016.B)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
 	qt422016.ReleaseByteBuffer(qb422016)
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
 	return qs422016
-//line ../internal/templates/mainpage.qtpl:70
+//line ../internal/templates/mainpage.qtpl:80
 }
 
-//line ../internal/templates/mainpage.qtpl:72
+//line ../internal/templates/mainpage.qtpl:82
 func streamdrawButton(qw422016 *qt422016.Writer, check bool) {
-//line ../internal/templates/mainpage.qtpl:72
+//line ../internal/templates/mainpage.qtpl:82
 	qw422016.N().S(`
 
    `)
-//line ../internal/templates/mainpage.qtpl:74
+//line ../internal/templates/mainpage.qtpl:84
 	if check {
-//line ../internal/templates/mainpage.qtpl:74
+//line ../internal/templates/mainpage.qtpl:84
 		qw422016.N().S(`
    <input type="checkbox" checked disabled >
    `)
-//line ../internal/templates/mainpage.qtpl:76
+//line ../internal/templates/mainpage.qtpl:86
 	} else {
-//line ../internal/templates/mainpage.qtpl:76
+//line ../internal/templates/mainpage.qtpl:86
 		qw422016.N().S(`
 	<input type="checkbox" disabled >
 	`)
-//line ../internal/templates/mainpage.qtpl:78
+//line ../internal/templates/mainpage.qtpl:88
 	}
-//line ../internal/templates/mainpage.qtpl:78
+//line ../internal/templates/mainpage.qtpl:88
 	qw422016.N().S(`
 `)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 }
 
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 func writedrawButton(qq422016 qtio422016.Writer, check bool) {
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	streamdrawButton(qw422016, check)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	qt422016.ReleaseWriter(qw422016)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 }
 
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 func drawButton(check bool) string {
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	qb422016 := qt422016.AcquireByteBuffer()
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	writedrawButton(qb422016, check)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	qs422016 := string(qb422016.B)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	qt422016.ReleaseByteBuffer(qb422016)
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 	return qs422016
-//line ../internal/templates/mainpage.qtpl:79
+//line ../internal/templates/mainpage.qtpl:89
 }
