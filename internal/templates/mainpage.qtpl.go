@@ -8,33 +8,32 @@
 package templates
 
 //line ../internal/templates/mainpage.qtpl:3
-import "github.com/valyala/fasthttp"
+import (
+	"github.com/Fedena22/Holiday_bucket_tool/internal/database"
+	"github.com/valyala/fasthttp"
+)
 
-//line ../internal/templates/mainpage.qtpl:5
+//line ../internal/templates/mainpage.qtpl:8
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line ../internal/templates/mainpage.qtpl:5
+//line ../internal/templates/mainpage.qtpl:8
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line ../internal/templates/mainpage.qtpl:6
+//line ../internal/templates/mainpage.qtpl:9
 type MainPage struct {
-	CTX  *fasthttp.RequestCtx
-	Data []Data
+	CTX      *fasthttp.RequestCtx
+	Data     []Data
+	Username string
 }
 type Data struct {
-	Number    int
-	Placename string
-	Latitude  float64
-	Longitude float64
-	Visited   bool
-	Username  string
+	database.Bucket
 }
 
 //line ../internal/templates/mainpage.qtpl:21
@@ -82,7 +81,7 @@ func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
 	<table style="width:100%">
 	`)
 //line ../internal/templates/mainpage.qtpl:31
-	streamemitRows(qw422016, p.Data)
+	streamemitRows(qw422016, p.Data, p.Username)
 //line ../internal/templates/mainpage.qtpl:31
 	qw422016.N().S(`
 	</table>
@@ -131,7 +130,7 @@ func (p *MainPage) Body() string {
 }
 
 //line ../internal/templates/mainpage.qtpl:41
-func streamemitRows(qw422016 *qt422016.Writer, rows []Data) {
+func streamemitRows(qw422016 *qt422016.Writer, rows []Data, username string) {
 //line ../internal/templates/mainpage.qtpl:41
 	qw422016.N().S(`
 	<tr>
@@ -166,7 +165,7 @@ func streamemitRows(qw422016 *qt422016.Writer, rows []Data) {
 		qw422016.N().S(`
 			`)
 //line ../internal/templates/mainpage.qtpl:53
-		if r.Username != "admin" {
+		if username != "admin" {
 //line ../internal/templates/mainpage.qtpl:53
 			qw422016.N().S(`
 			<td style="width:20%;">`)
@@ -212,22 +211,22 @@ func streamemitRows(qw422016 *qt422016.Writer, rows []Data) {
 }
 
 //line ../internal/templates/mainpage.qtpl:64
-func writeemitRows(qq422016 qtio422016.Writer, rows []Data) {
+func writeemitRows(qq422016 qtio422016.Writer, rows []Data, username string) {
 //line ../internal/templates/mainpage.qtpl:64
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line ../internal/templates/mainpage.qtpl:64
-	streamemitRows(qw422016, rows)
+	streamemitRows(qw422016, rows, username)
 //line ../internal/templates/mainpage.qtpl:64
 	qt422016.ReleaseWriter(qw422016)
 //line ../internal/templates/mainpage.qtpl:64
 }
 
 //line ../internal/templates/mainpage.qtpl:64
-func emitRows(rows []Data) string {
+func emitRows(rows []Data, username string) string {
 //line ../internal/templates/mainpage.qtpl:64
 	qb422016 := qt422016.AcquireByteBuffer()
 //line ../internal/templates/mainpage.qtpl:64
-	writeemitRows(qb422016, rows)
+	writeemitRows(qb422016, rows, username)
 //line ../internal/templates/mainpage.qtpl:64
 	qs422016 := string(qb422016.B)
 //line ../internal/templates/mainpage.qtpl:64
