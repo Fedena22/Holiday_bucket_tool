@@ -9,7 +9,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.8.3
 	github.com/rubenv/sql-migrate v1.5.2
 	github.com/sirupsen/logrus v1.9.3
-	golang.org/x/sync v0.3.0
+	golang.org/x/sync v0.4.0
 	modernc.org/sqlite v1.25.0
 )
 
