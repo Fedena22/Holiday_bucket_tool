@@ -1,0 +1,89 @@
+// Main page template. Implements BasePage methods.
+
+{% import (
+		"github.com/Fedena22/Holiday_bucket_tool/internal/database"
+		"github.com/valyala/fasthttp"
+) %}
+
+{% code
+type MainPage struct {
+	CTX *fasthttp.RequestCtx
+	Data []Data
+	Username string
+}
+type Data struct {
+
+	database.Bucket
+}
+%}
+
+
+{% func (p *MainPage) Title() %}
+	This is the main page
+{% endfunc %}
+
+
+{% func (p *MainPage) Body() %}
+	<h1>Main page</h1>
+	<div>
+		Click links below:
+	<table style="width:100%">
+	{%= emitRows(p.Data, p.Username) %}
+	</table>
+	</div>
+	<div>
+		Some info about you:<br/>
+		IP: <b>{%s p.CTX.RemoteIP().String() %}</b><br/>
+		User-Agent: <b>{%z p.CTX.UserAgent() %}</b><br/>
+	</div>
+{% endfunc %}
+
+{% func emitRows(rows []Data, username string) %}
+	<tr>
+		{% comment %} <th>ID</th>  {% endcomment %}
+		<th>Name</th>
+		<th>Map</th>
+		<th>Visited</th>
+	</tr>
+
+	{% for n, r := range rows %}
+		<tr style="background: {% if n&1 == 1 %}white{% else %}#ddd{% endif %}">
+			{% comment %} <td>{%d r.Number %}</td>
+			{% endcomment %}
+			{% if username != "admin" %}
+			<td style="width:20%;">{%s r.Placename %}</td> 
+			<td style="height:360px; vertical-align:bottom; width:60%;" id="map{%d r.Number %}">{%= drawMap(r.Longitude, r.Latitude, r.Number, r.Placename) %}</td>
+			<td style="vertical-align:bottom; width:20%;">{%s= drawButton(r.Visited) %}</td>
+			{% else %}
+			<td></td>
+			<td></td>
+			<td><button onclick="myFunction()">Click me!</button></td>
+			{% endif %}
+		</tr>
+	{% endfor %}
+{% endfunc %}
+
+{% func drawMap(lat, long float64, id int, name string) %}
+<script >
+var map = L.map('map{%d id %}', {
+    center: [{%f long %}, {%f lat %}],
+    zoom: 13});
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+L.marker([{%f long %},{%f lat %}]).addTo(map)
+    .bindPopup('{%s name %}')
+    .openPopup();
+</script>
+{% endfunc %}
+
+{% func drawButton(check bool) %}
+
+   {% if (check) %}
+   <input type="checkbox" checked disabled >
+   {% else %}
+	<input type="checkbox" disabled >
+	{% endif %}
+{% endfunc %}

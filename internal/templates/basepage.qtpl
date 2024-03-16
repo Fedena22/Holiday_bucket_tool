@@ -1,0 +1,35 @@
+This is a base page template. All the other template pages implement this interface.
+
+{% interface
+Page {
+	Title()
+	Body()
+}
+%}
+
+
+Page prints a page implementing Page interface.
+{% func PageTemplate(p Page) %}
+<html>
+	<head>
+		<title>{%= p.Title() %}</title>
+	</head>
+	<body>
+	 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+		{%= p.Body() %}
+	</body>
+</html>
+{% endfunc %}
+
+
+Base page implementation. Other pages may inherit from it if they need
+overriding only certain Page methods
+{% code type BasePage struct {} %}
+{% func (p *BasePage) Title() %}This is a base title{% endfunc %}
+{% func (p *BasePage) Body() %}This is a base body{% endfunc %}
