@@ -17,6 +17,13 @@ type Bucket struct {
 	Visited   bool    `json:"Visited" db:"Visited"`
 }
 
+type demoData struct {
+	Placename string
+	Lat       float64
+	Long      float64
+	Visited   bool
+}
+
 var ctx = context.Background()
 
 func Open() (*sql.DB, error) {
@@ -40,7 +47,11 @@ func Close(db *sql.DB) error {
 
 func Initialize(db *sql.DB) error {
 	sqlQuarry := "Create Table IF NOT EXISTS Buckets (ID INTEGER PRIMARY KEY AUTOINCREMENT, Placename TEXT(255), Latitude TEXT(255),Longitude TEXT(255), Visited int(1));"
-	_, err := db.ExecContext(ctx, sqlQuarry)
+	stmt, err := db.Prepare(sqlQuarry)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.ExecContext(ctx)
 	if err != nil {
 		return err
 	}
@@ -62,13 +73,27 @@ func GetLocations(db *sql.DB) ([]Bucket, error) {
 }
 
 func TempData(db *sql.DB) error {
-	demo := []string{
-		"Insert into Buckets (Placename, Latitude, Longitude, Visited ) Values (\"Kyoto palace\", \"35.02509\", \"135.76193\", 1);",
-		"Insert into Buckets (Placename, Latitude, Longitude, Visited ) Values (\"Osaka train-station\", \"34.7332\", \"135.49928\", 0);",
+	stmt, err := db.Prepare("Insert into Buckets (Placename, Latitude, Longitude, Visited ) Values ($1,$2,$3,$4)")
+	if err != nil {
+		return err
+	}
+	demo := []demoData{
+		{
+			Placename: "Kyoto",
+			Lat:       35.02509,
+			Long:      135.76193,
+			Visited:   false,
+		},
+		{
+			Placename: "Osaka train-station",
+			Lat:       34.7332,
+			Long:      135.49928,
+			Visited:   true,
+		},
 	}
 
-	for _, stmt := range demo {
-		_, err := db.ExecContext(ctx, stmt)
+	for _, data := range demo {
+		_, err := stmt.ExecContext(ctx, data.Placename, data.Lat, data.Long, data.Visited)
 		if err != nil {
 			return err
 		}

@@ -16,5 +16,5 @@ fumpt: ##Run gofumpt
 generate: fumpt
 	go generate ./...
 
-run: generate
+run:
 	go run ./cmd/server.go
