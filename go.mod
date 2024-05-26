@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/blockloop/scan/v2 v2.5.0
-	github.com/valyala/fasthttp v1.52.0
+	github.com/valyala/fasthttp v1.53.0
 	github.com/valyala/quicktemplate v1.7.0
 	modernc.org/sqlite v1.29.5
 )
