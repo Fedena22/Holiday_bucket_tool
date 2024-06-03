@@ -6,7 +6,7 @@ require (
 	github.com/blockloop/scan/v2 v2.5.0
 	github.com/valyala/fasthttp v1.54.0
 	github.com/valyala/quicktemplate v1.7.0
-	modernc.org/sqlite v1.29.10
+	modernc.org/sqlite v1.30.0
 )
 
 require (
